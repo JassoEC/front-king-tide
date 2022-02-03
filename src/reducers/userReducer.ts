@@ -145,7 +145,7 @@ export const userReducer = (
         user: { ...USER_INITIAL_STATE.user },
         users: state.users.map((user) =>
           user.id === action.payload.userId
-            ? { ...user, resumes: [...user.files, action.payload] }
+            ? { ...user, files: [...user.files, action.payload] }
             : user
         ),
         fileName: "",
