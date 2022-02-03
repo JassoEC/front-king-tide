@@ -1,12 +1,16 @@
-import logo from "./logo.svg";
 import "./App.css";
+import { BrowserRouter } from "react-router-dom";
+import { AppState } from "./context/AppState";
+import { AppRouting } from "./AppRouting";
 
 const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
+      <BrowserRouter>
+        <AppState>
+          <AppRouting />
+        </AppState>
+      </BrowserRouter>
     </div>
   );
 };
