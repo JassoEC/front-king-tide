@@ -1,30 +1,37 @@
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { useContext, useEffect } from "react";
+import { ActionButton } from "../../components/common/actionButton";
+import { DeleteUserDialog } from "../../components/users/DeleteUserDialog";
 import { UserDialog } from "../../components/users/UserDialog";
+import { UserImageDialog } from "../../components/users/UserImageDialog";
 import { UsersTable } from "../../components/users/UsersTable";
 import { UsersContext } from "../../context/UsersContext";
 
 export const UsersView = () => {
-  const { getUsers } = useContext(UsersContext);
+  const { getUsers, handleOpenCreateUser } = useContext(UsersContext);
 
   useEffect(() => {
     getUsers("/user");
   }, []);
 
   return (
-    <>
-      <Box sx={{ m: 2 }}>
-        <Grid container spacing={2} columns={16}>
-          <Grid container item xs={16} justifyContent="flex-end">
-            <Button>Nuevo usuario</Button>
-          </Grid>
-          <Grid container item xs={16} justifyContent="flex-end">
-            <UsersTable />
-          </Grid>
+    <Box sx={{ pt: 2, pb: 5, px: 5 }}>
+      <Grid container spacing={2} columns={16} justifyContent="center">
+        <Grid container item xs={16} justifyContent="flex-end">
+          <ActionButton
+            label="Nuevo usuario"
+            onClick={handleOpenCreateUser}
+            color="primary"
+          />
         </Grid>
-      </Box>
+        <Grid container item xs={15} justifyContent="flex-end">
+          <UsersTable />
+        </Grid>
+      </Grid>
       <UserDialog />
-    </>
+      <DeleteUserDialog />
+      <UserImageDialog />
+    </Box>
   );
 };

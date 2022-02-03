@@ -11,11 +11,18 @@ export interface User {
   name: string;
   lastName: string;
   surName: string;
+  fullName: string;
   rfc: string;
   birthday: string;
   profilePicture?: string;
+  profilePicturePath?: string;
   email?: string;
   deleted_at?: string;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface UserResponse {
+  data: User;
+  code?: number;
 }

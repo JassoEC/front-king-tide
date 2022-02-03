@@ -7,6 +7,11 @@ export interface UsersState {
   users: User[];
   links: Links;
   pagination: Meta;
+  user: User;
+  showDeleteUser: boolean;
+  showUserDialog: boolean;
+  showImageDialog: boolean;
+  image: string | Blob | ArrayBuffer | undefined;
 }
 
 export const USER_INITIAL_STATE: UsersState = {
@@ -28,6 +33,18 @@ export const USER_INITIAL_STATE: UsersState = {
     to: 0,
     total: 0,
   },
+  user: {
+    name: "",
+    lastName: "",
+    fullName: "",
+    surName: "",
+    birthday: "",
+    rfc: "",
+  },
+  showDeleteUser: false,
+  showUserDialog: false,
+  showImageDialog: false,
+  image: "",
 };
 
 export const userReducer = (
@@ -36,6 +53,8 @@ export const userReducer = (
 ): UsersState => {
   switch (action.type) {
     case "getUsers":
+    case "deleteUser":
+    case "saveUser":
       return {
         ...state,
         loading: true,
@@ -52,6 +71,67 @@ export const userReducer = (
       return {
         ...state,
         loading: false,
+      };
+    case "deleteUserSuccess":
+      return {
+        ...state,
+        loading: false,
+        users: state.users.filter((user) => user.id !== action.payload.id),
+        showDeleteUser: false,
+        pagination: {
+          ...state.pagination,
+          to: state.pagination.to - 1,
+          total: state.pagination.total - 1,
+        },
+      };
+    case "showDeleteUser":
+      return {
+        ...state,
+        showDeleteUser: action.payload,
+      };
+    case "setUSer":
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case "showUserDialog":
+      return {
+        ...state,
+        showUserDialog: action.payload,
+      };
+    case "saveUserSuccess":
+      return {
+        ...state,
+        users: [action.payload, ...state.users],
+        user: { ...USER_INITIAL_STATE.user },
+        showUserDialog: false,
+        loading: false,
+        pagination: {
+          ...state.pagination,
+          to: state.pagination.to + 1,
+          total: state.pagination.total + 1,
+        },
+      };
+    case "updateUserSuccess":
+      return {
+        ...state,
+        loading: false,
+        showUserDialog: false,
+        user: { ...USER_INITIAL_STATE.user },
+        users: state.users.map((user) =>
+          user.id === action.payload.id ? action.payload : user
+        ),
+        showImageDialog: false,
+      };
+    case "showImageDialog":
+      return {
+        ...state,
+        showImageDialog: action.payload,
+      };
+    case "setImage":
+      return {
+        ...state,
+        image: action.payload,
       };
     default:
       return state;
