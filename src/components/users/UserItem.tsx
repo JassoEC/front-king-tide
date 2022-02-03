@@ -43,7 +43,11 @@ export const UserItem = ({
       </TableCell>
       <TableCell className={classes.cell} component="th" scope="row">
         {user.files.length > 0 ? (
-          <a download href={`${imagesURL}/${user.files[0].filePath}`}>
+          <a
+            target="_blank"
+            download
+            href={`${imagesURL}/${user.files[0].filePath}`}
+          >
             <span>{user.fullName}</span>
             <AttachFileIcon />
           </a>
