@@ -1,47 +1,71 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import {
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableRow,
-  Paper,
+  TableHead,
 } from "@mui/material";
 import { UserItem } from "./UserItem";
 import { UsersContext } from "../../context/UsersContext";
 import { TablePaginationActions } from "./TablePagination";
+import { makeStyles } from "@mui/styles";
+
+const headers: string[] = [
+  "",
+  "",
+  "Nombre",
+  "Fecha de nacimiento",
+  "rfc",
+  "",
+  "",
+];
 
 export const UsersTable = () => {
-  const { users, links, pagination, getUsers } = useContext(UsersContext);
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  /*  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0; */
-
+  const {
+    users,
+    links,
+    pagination,
+    getUsers,
+    handleOpenDeleteUser,
+    handleShowUpdateUser,
+    hanbleOpenImageModal,
+  } = useContext(UsersContext);
+  const classes = useStyles();
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-        <TableBody>
-          {users.map((user) => (
-            <UserItem user={user} key={`user-${user.id}`} />
-          ))}
-          {/*  {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
-          )} */}
-        </TableBody>
-        <TableFooter>
+    <TableContainer>
+      <Table stickyHeader>
+        <TableHead>
           <TableRow>
-            <TablePaginationActions
-              links={links}
-              pagination={pagination}
-              handleLoadData={getUsers}
-            />
+            {headers.map((header, index) => (
+              <TableCell key={`header-${index}`}>{header}</TableCell>
+            ))}
           </TableRow>
-        </TableFooter>
+        </TableHead>
+        <TableBody className={classes.tableBody}>
+          {users.map((user) => (
+            <UserItem
+              user={user}
+              handleOpenDeleteUser={handleOpenDeleteUser}
+              handleShowUpdateUser={handleShowUpdateUser}
+              hanbleOpenImageModal={hanbleOpenImageModal}
+              key={`user-${user.rfc}`}
+            />
+          ))}
+        </TableBody>
       </Table>
+      <TablePaginationActions
+        links={links}
+        pagination={pagination}
+        handleLoadData={getUsers}
+      />
     </TableContainer>
   );
 };
+
+const useStyles = makeStyles({
+  tableBody: {
+    overflow: "auto",
+  },
+});

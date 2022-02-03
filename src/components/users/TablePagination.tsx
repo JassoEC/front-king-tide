@@ -1,7 +1,14 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
-import { IconButton, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+  Grid,
+  IconButton,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from "@mui/material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
@@ -18,6 +25,7 @@ export const TablePaginationActions = (props: Props) => {
   const [perPage, setRowsPerPage] = useState(10);
 
   const { links, handleLoadData, pagination } = props;
+
   const theme = useTheme();
 
   const handleFirstPageButtonClick = () => {
@@ -48,59 +56,68 @@ export const TablePaginationActions = (props: Props) => {
   };
 
   useEffect(() => {
-    const path = `/user?page=${pagination?.current_page}`;
+    const path = `/user`;
     handleLoadData(path, { perPage });
   }, [perPage]);
 
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <Select
-        onChange={handleChangeRowsPerPage}
-        variant="outlined"
-        value={perPage}
-      >
-        {[5, 10, 15, 20].map((item) => (
-          <MenuItem value={item} key={`${item}-item`}>
-            {item}
-          </MenuItem>
-        ))}
-      </Select>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={pagination?.total === 0}
-        aria-label="first page"
-      >
-        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={!links.prev}
-        aria-label="previous page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={!links.next}
-        aria-label="next page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={pagination?.to === pagination?.total}
-        aria-label="last page"
-      >
-        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
+    <Box sx={{ flexShrink: 0, ml: 2.5, mt: 2, justifyContent: "center" }}>
+      <Grid container alignContent="center" alignItems="center">
+        <Typography
+          style={{ marginLeft: 10, marginRight: 10 }}
+        >{`Filas por página: `}</Typography>
+        <Select
+          onChange={handleChangeRowsPerPage}
+          variant="standard"
+          value={perPage}
+        >
+          {[5, 10, 15, 20].map((item) => (
+            <MenuItem value={item} key={`${item}-item`}>
+              {item}
+            </MenuItem>
+          ))}
+        </Select>
+
+        <IconButton
+          onClick={handleFirstPageButtonClick}
+          disabled={pagination?.total === 0}
+          aria-label="first page"
+        >
+          {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+        </IconButton>
+        <IconButton
+          onClick={handleBackButtonClick}
+          disabled={!links.prev}
+          aria-label="previous page"
+        >
+          {theme.direction === "rtl" ? (
+            <KeyboardArrowRight />
+          ) : (
+            <KeyboardArrowLeft />
+          )}
+        </IconButton>
+        <IconButton
+          onClick={handleNextButtonClick}
+          disabled={!links.next}
+          aria-label="next page"
+        >
+          {theme.direction === "rtl" ? (
+            <KeyboardArrowLeft />
+          ) : (
+            <KeyboardArrowRight />
+          )}
+        </IconButton>
+        <IconButton
+          onClick={handleLastPageButtonClick}
+          disabled={pagination?.to === pagination?.total}
+          aria-label="last page"
+        >
+          {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+        </IconButton>
+        <Typography
+          style={{ marginRight: 10, marginLeft: 10 }}
+        >{`${pagination?.from} / ${pagination?.to} de ${pagination?.total}`}</Typography>
+      </Grid>
     </Box>
   );
 };
