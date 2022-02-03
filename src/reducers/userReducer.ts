@@ -11,7 +11,13 @@ export interface UsersState {
   showDeleteUser: boolean;
   showUserDialog: boolean;
   showImageDialog: boolean;
+  showFileDialog: boolean;
+  showViewFileDialog: boolean;
   image: string | Blob | ArrayBuffer | undefined;
+  fileName: string;
+  error: boolean;
+  message: string;
+  filePath: string;
 }
 
 export const USER_INITIAL_STATE: UsersState = {
@@ -40,11 +46,18 @@ export const USER_INITIAL_STATE: UsersState = {
     surName: "",
     birthday: "",
     rfc: "",
+    files: [],
   },
   showDeleteUser: false,
   showUserDialog: false,
   showImageDialog: false,
+  showFileDialog: false,
+  showViewFileDialog: false,
   image: "",
+  fileName: "",
+  filePath: "",
+  error: false,
+  message: "",
 };
 
 export const userReducer = (
@@ -55,9 +68,12 @@ export const userReducer = (
     case "getUsers":
     case "deleteUser":
     case "saveUser":
+    case "saveFile":
       return {
         ...state,
         loading: true,
+        error: false,
+        message: "",
       };
     case "getUsersSuccess":
       return {
@@ -71,6 +87,10 @@ export const userReducer = (
       return {
         ...state,
         loading: false,
+        error: true,
+        message:
+          action.payload ||
+          "Ha ocurrido un error con la petición. Verifica el archivo seleccionado",
       };
     case "deleteUserSuccess":
       return {
@@ -89,7 +109,7 @@ export const userReducer = (
         ...state,
         showDeleteUser: action.payload,
       };
-    case "setUSer":
+    case "setUser":
       return {
         ...state,
         user: action.payload,
@@ -98,6 +118,11 @@ export const userReducer = (
       return {
         ...state,
         showUserDialog: action.payload,
+      };
+    case "showFileDialog":
+      return {
+        ...state,
+        showFileDialog: action.payload,
       };
     case "saveUserSuccess":
       return {
@@ -111,6 +136,19 @@ export const userReducer = (
           to: state.pagination.to + 1,
           total: state.pagination.total + 1,
         },
+      };
+    case "saveFileSuccess":
+      return {
+        ...state,
+        loading: false,
+        showFileDialog: false,
+        user: { ...USER_INITIAL_STATE.user },
+        users: state.users.map((user) =>
+          user.id === action.payload.userId
+            ? { ...user, resumes: [...user.files, action.payload] }
+            : user
+        ),
+        fileName: "",
       };
     case "updateUserSuccess":
       return {
@@ -133,6 +171,18 @@ export const userReducer = (
         ...state,
         image: action.payload,
       };
+    case "setFileName":
+      return {
+        ...state,
+        fileName: action.payload,
+      };
+    case "setFilePath":
+      return {
+        ...state,
+        filePath: action.payload,
+      };
+    case "showViewFileDialog":
+      return { ...state, showViewFileDialog: action.payload };
     default:
       return state;
   }

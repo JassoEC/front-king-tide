@@ -30,7 +30,7 @@ export const UserImageDialog = () => {
       <DialogContent>
         <Grid container columns={12} spacing={1}>
           <Grid item xs={12} container justifyContent="center">
-            <Typography>{`Imagen de perfil para ${user.name}`}</Typography>
+            <Typography>{`Imagen de perfil para ${user.fullName}`}</Typography>
           </Grid>
           <Grid item xs={12} container justifyContent="center">
             <input

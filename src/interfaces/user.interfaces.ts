@@ -1,4 +1,5 @@
 import { Links, Meta } from "./pagination.interfaces";
+import { Resume } from "./files.interfaces";
 
 export interface UsersResponse {
   data: User[];
@@ -20,6 +21,7 @@ export interface User {
   deleted_at?: string;
   created_at?: string;
   updated_at?: string;
+  files: Resume[];
 }
 
 export interface UserResponse {

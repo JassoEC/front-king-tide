@@ -7,6 +7,8 @@ import { UserDialog } from "../../components/users/UserDialog";
 import { UserImageDialog } from "../../components/users/UserImageDialog";
 import { UsersTable } from "../../components/users/UsersTable";
 import { UsersContext } from "../../context/UsersContext";
+import { UserFileDialog } from "../../components/users/UserFileDialog";
+import { FileDialog } from "../../components/users/FileDialog";
 
 export const UsersView = () => {
   const { getUsers, handleOpenCreateUser } = useContext(UsersContext);
@@ -32,6 +34,8 @@ export const UsersView = () => {
       <UserDialog />
       <DeleteUserDialog />
       <UserImageDialog />
+      <UserFileDialog />
+      <FileDialog />
     </Box>
   );
 };

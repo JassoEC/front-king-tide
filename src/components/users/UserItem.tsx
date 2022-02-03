@@ -2,6 +2,7 @@ import { Button, IconButton, TableCell, TableRow } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ClearIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { User } from "../../interfaces/user.interfaces";
 import { imagesURL } from "../../api/backendApi";
@@ -12,6 +13,8 @@ interface Props {
   handleOpenDeleteUser: (id: number) => void;
   handleShowUpdateUser: (id: number) => void;
   hanbleOpenImageModal: (id: number) => void;
+  handleOpenFileModal: (id: number) => void;
+  handleOpenViewFileModal: (path: string) => void;
 }
 
 export const UserItem = ({
@@ -19,6 +22,8 @@ export const UserItem = ({
   handleOpenDeleteUser,
   handleShowUpdateUser,
   hanbleOpenImageModal,
+  handleOpenFileModal,
+  handleOpenViewFileModal,
 }: Props) => {
   const classes = useStyeles();
 
@@ -37,7 +42,20 @@ export const UserItem = ({
         />
       </TableCell>
       <TableCell className={classes.cell} component="th" scope="row">
-        <Button>{user.fullName}</Button>
+        {user.files.length > 0 ? (
+          /*<Button
+            onClick={() => handleOpenViewFileModal(user.files[0].filePath)}
+          >
+            {user.fullName}
+            <AttachFileIcon />
+          </Button>*/
+          <a download href={`${imagesURL}/${user.files[0].filePath}`}>
+            {user.fullName}
+            <AttachFileIcon />
+          </a>
+        ) : (
+          <span>{user.fullName}</span>
+        )}
       </TableCell>
       <TableCell className={classes.cell} align="right">
         {user.birthday}
@@ -54,7 +72,7 @@ export const UserItem = ({
         </IconButton>
       </TableCell>
       <TableCell className={classes.cell} style={{ margin: 0, padding: 0 }}>
-        <IconButton>
+        <IconButton onClick={() => handleOpenFileModal(user.id!)}>
           <FileUploadIcon />
         </IconButton>
       </TableCell>
