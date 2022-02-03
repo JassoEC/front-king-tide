@@ -43,14 +43,8 @@ export const UserItem = ({
       </TableCell>
       <TableCell className={classes.cell} component="th" scope="row">
         {user.files.length > 0 ? (
-          /*<Button
-            onClick={() => handleOpenViewFileModal(user.files[0].filePath)}
-          >
-            {user.fullName}
-            <AttachFileIcon />
-          </Button>*/
           <a download href={`${imagesURL}/${user.files[0].filePath}`}>
-            {user.fullName}
+            <span>{user.fullName}</span>
             <AttachFileIcon />
           </a>
         ) : (
