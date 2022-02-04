@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import { LoginView } from "./views/auth/LoginView";
 import { UsersView } from "./views/users/UsersView";
+import { UserView } from "./views/users/UserView";
 
 export const AppRouting = () => {
   const { isAuthenticated, dispatch } = useContext(AuthContext);
@@ -25,6 +26,7 @@ export const AppRouting = () => {
   return (
     <Routes>
       <Route element={<UsersView />} path="/users" />
+      <Route element={<UserView />} path="/users/:id" />
       <Route element={<Navigate to="/users" />} path="*" />
     </Routes>
   );

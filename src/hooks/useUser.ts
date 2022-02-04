@@ -4,6 +4,7 @@ import { UserResponse, UsersResponse } from "../interfaces/user.interfaces";
 import { UsersState } from "../reducers/userReducer";
 import { UserActionTypes } from "../types/users.types";
 import { ResumeResponse } from "../interfaces/files.interfaces";
+import { useNavigate } from "react-router-dom";
 
 export interface UseUserProps {
   getUsers: (path: string, params?: Object) => void;
@@ -25,12 +26,16 @@ export interface UseUserProps {
   saveFile: () => void;
   openViewFileModal: (path: string) => void;
   handleCloseViewFileModal: () => void;
+  getUser: (id: string) => void;
+  navigateToUser: (id: number) => void;
+  navigateBack: () => void;
 }
 
 export const useUser = (
   state: UsersState,
   dispatch: Dispatch<UserActionTypes>
 ): UseUserProps => {
+  const navigate = useNavigate();
   const [userFile, setUserFile] = useState<File>();
 
   const getUsers = async (path: string, params?: Object) => {
@@ -217,6 +222,22 @@ export const useUser = (
     dispatch({ type: "showViewFileDialog", payload: false });
   };
 
+  const getUser = async (id: string) => {
+    try {
+      const response = await backendApi.get<UserResponse>(`/user/${id}`);
+      dispatch({ type: "setUser", payload: response.data.data });
+    } catch (error) {
+      dispatch({ type: "httpError" });
+    }
+  };
+
+  const navigateToUser = (id: number) => {
+    navigate(`/users/${id}`);
+  };
+
+  const navigateBack = () => {
+    navigate(-1);
+  };
   return {
     getUsers,
     deleteUser,
@@ -237,5 +258,8 @@ export const useUser = (
     saveFile,
     openViewFileModal,
     handleCloseViewFileModal,
+    getUser,
+    navigateToUser,
+    navigateBack,
   };
 };

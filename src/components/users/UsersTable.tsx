@@ -33,6 +33,7 @@ export const UsersTable = () => {
     hanbleOpenImageModal,
     handleOpenFileModal,
     openViewFileModal,
+    navigateToUser,
   } = useContext(UsersContext);
   const classes = useStyles();
   return (
@@ -54,6 +55,7 @@ export const UsersTable = () => {
               hanbleOpenImageModal={hanbleOpenImageModal}
               handleOpenFileModal={handleOpenFileModal}
               handleOpenViewFileModal={openViewFileModal}
+              handleNavigate={navigateToUser}
               key={`user-${user.rfc}`}
             />
           ))}

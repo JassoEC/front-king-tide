@@ -1,8 +1,9 @@
-import { Button, IconButton, TableCell, TableRow } from "@mui/material";
+import { IconButton, TableCell, TableRow } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ClearIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { User } from "../../interfaces/user.interfaces";
 import { imagesURL } from "../../api/backendApi";
@@ -15,6 +16,7 @@ interface Props {
   hanbleOpenImageModal: (id: number) => void;
   handleOpenFileModal: (id: number) => void;
   handleOpenViewFileModal: (path: string) => void;
+  handleNavigate: (id: number) => void;
 }
 
 export const UserItem = ({
@@ -24,6 +26,7 @@ export const UserItem = ({
   hanbleOpenImageModal,
   handleOpenFileModal,
   handleOpenViewFileModal,
+  handleNavigate,
 }: Props) => {
   const classes = useStyeles();
 
@@ -45,6 +48,7 @@ export const UserItem = ({
         {user.files.length > 0 ? (
           <a
             target="_blank"
+            rel="noreferrer"
             download
             href={`${imagesURL}/${user.files[0].filePath}`}
           >
@@ -62,6 +66,9 @@ export const UserItem = ({
         {user.rfc}
       </TableCell>
       <TableCell className={classes.cell} style={{ margin: 0, padding: 0 }}>
+        <IconButton onClick={() => handleNavigate(user.id!)}>
+          <VisibilityIcon />
+        </IconButton>
         <IconButton onClick={() => handleShowUpdateUser(user.id!)}>
           <EditIcon />
         </IconButton>
